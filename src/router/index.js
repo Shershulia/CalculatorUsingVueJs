@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from "vue-router";
 import CalculatorView from "../views/CalculatorView.vue";
 import ContactView from "../views/ContactView.vue";
 
-
 const routes = [
   {
     path: "/",

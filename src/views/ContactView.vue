@@ -1,26 +1,22 @@
 <template>
-  <div >
+  <div>
     <h1>Give a feedback</h1>
     <form>
-      <label>Select a category</label>
-      <select v-model="comment.category">
-        <option
-          v-for="option in categories"
-          :value="option"
-          :key="option"
-          :selected="option === comment.category"
-        >{{ option }}</option>
-      </select>
+      <BaseSelect
+        :options="categories"
+        v-model="comment.category"
+        label="Select category"
+      ></BaseSelect>
 
-      <h3>Name & describe your experience</h3>
+      <h3>Describe your experience</h3>
 
-      <BaseInput v-model="comment.title"
-                label='Title'
-                type="text"></BaseInput>
+      <BaseInput v-model="comment.title" label="Title" type="text"></BaseInput>
 
-      <BaseInput v-model="comment.description"
-                 label='Description'
-                 type="text"></BaseInput>
+      <BaseInput
+        v-model="comment.description"
+        label="Description"
+        type="text"
+      ></BaseInput>
       <button class="button -fill-gradient" type="submit">Submit</button>
     </form>
   </div>
@@ -28,26 +24,24 @@
 
 <script>
 import BaseInput from "@/components/BaseInput.vue";
+import BaseSelect from "@/components/BaseSelect.vue";
 
 export default {
-  components: { BaseInput },
-  data () {
+  components: { BaseSelect, BaseInput },
+  data() {
     return {
-      categories: [
-        'experience',
-        'bag',
-      ],
+      categories: ["experience", "bag"],
       comment: {
-        category: '',
-        title: '',
-        description: '',
-      }
-    }
-  }
-}
+        category: "",
+        title: "",
+        description: "",
+      },
+    };
+  },
+};
 </script>
 <style>
-form{
+form {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
