@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Give a feedback</h1>
-    <form>
+    <form @submit.prevent="sendForm">
       <BaseSelect
         :options="categories"
         v-model="comment.category"
@@ -25,6 +25,7 @@
 <script>
 import BaseInput from "@/components/BaseInput.vue";
 import BaseSelect from "@/components/BaseSelect.vue";
+import axios from 'axios'
 
 export default {
   components: { BaseSelect, BaseInput },
@@ -38,6 +39,11 @@ export default {
       },
     };
   },
+  methods:{
+    sendForm(){
+
+    }
+  }
 };
 </script>
 <style>
