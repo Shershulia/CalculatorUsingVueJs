@@ -1,8 +1,7 @@
 <template>
   <nav>
-    <router-link to="/">Calculator</router-link
-    ><!-- |
-     <router-link to="/about">About</router-link>-->
+    <router-link :to="{ name: 'CalculatorView' }">Calculator</router-link> |
+    <router-link :to="{ name: 'ContactView' }">Kontaktskjema</router-link>
   </nav>
   <h1>Calculator app</h1>
 
