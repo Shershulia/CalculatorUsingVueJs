@@ -11,12 +11,20 @@
         ></BaseSelect>
       </fieldset>
 
-
       <fieldset>
         <legend>Personal information to five you feedback</legend>
-        <BaseInput v-model="comment.name" label="Name" type="text"></BaseInput>
+        <BaseInput
+          v-model="comment.name"
+          label="Name"
+          type="text"
+          error="This input has an error"
+        ></BaseInput>
 
-        <BaseInput v-model="comment.mail" label="E-mail" type="text"></BaseInput>
+        <BaseInput
+          v-model="comment.mail"
+          label="E-mail"
+          type="text"
+        ></BaseInput>
       </fieldset>
       <fieldset>
         <legend>Describe your experience</legend>
