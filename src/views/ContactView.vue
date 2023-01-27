@@ -10,7 +10,9 @@
 
       <h3>Describe your experience</h3>
 
-      <BaseInput v-model="comment.title" label="Title" type="text"></BaseInput>
+      <BaseInput v-model="comment.name" label="Name" type="text"></BaseInput>
+
+      <BaseInput v-model="comment.mail" label="E-mail" type="text"></BaseInput>
 
       <BaseInput
         v-model="comment.description"
@@ -34,7 +36,8 @@ export default {
       categories: ["experience", "bag"],
       comment: {
         category: "",
-        title: "",
+        name: "",
+        mail: "",
         description: "",
       },
     };
