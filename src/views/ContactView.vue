@@ -25,7 +25,7 @@
 <script>
 import BaseInput from "@/components/BaseInput.vue";
 import BaseSelect from "@/components/BaseSelect.vue";
-import axios from 'axios'
+import axios from "axios";
 
 export default {
   components: { BaseSelect, BaseInput },
@@ -39,11 +39,22 @@ export default {
       },
     };
   },
-  methods:{
-    sendForm(){
-
-    }
-  }
+  methods: {
+    sendForm() {
+      axios
+        .post(
+          "https://my-json-server.typicode.com/Shershulia/CalculatorUsingVueJs/comments",
+          this.comment,
+          alert("Success")
+        )
+        .then(function (response) {
+          console.log("Response", response);
+        })
+        .catch(function (err) {
+          console.log("Error", err);
+        });
+    },
+  },
 };
 </script>
 <style>
