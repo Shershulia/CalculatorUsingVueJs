@@ -5,8 +5,8 @@
       <fieldset>
         <legend>Choose one of two option</legend>
         <BaseSelect
-          :options="categories"
-          v-model="comment.category"
+          :options="state.categories"
+          v-model="state.comment.category"
           label="Select category"
         ></BaseSelect>
       </fieldset>
@@ -14,14 +14,14 @@
       <fieldset>
         <legend>Personal information to five you feedback</legend>
         <BaseInput
-          v-model="comment.name"
+          v-model="state.comment.name"
           label="Name"
           type="text"
           error="This input has an error"
         ></BaseInput>
 
         <BaseInput
-          v-model="comment.mail"
+          v-model="state.comment.mail"
           label="E-mail"
           type="text"
         ></BaseInput>
@@ -29,7 +29,7 @@
       <fieldset>
         <legend>Describe your experience</legend>
         <BaseInput
-          v-model="comment.description"
+          v-model="state.comment.description"
           label="Description"
           type="text"
         ></BaseInput>
@@ -43,35 +43,54 @@
 <script>
 import BaseInput from "@/components/BaseInput.vue";
 import BaseSelect from "@/components/BaseSelect.vue";
+import { reactive, computed } from 'vue'
 import axios from "axios";
+import useValidate from '@vuelidate/core'
+import { required } from '@vuelidate/validators'
 
 export default {
   components: { BaseSelect, BaseInput },
-  data() {
-    return {
+  setup () {
+    const state = reactive({
       categories: ["experience", "bag"],
       comment: {
         category: "",
         name: "",
         mail: "",
         description: "",
+      }
       },
-    };
+    )
+    const rules = computed(() => {
+      return {
+        comment: {
+          category: { required },
+          name: { required },
+          mail: { required },
+          description: { required },
+        }
+      }
+    })
+    const v$ = useValidate(rules, state)
+    return { state, v$ }
   },
   methods: {
     sendForm() {
-      axios
-        .post(
-          "https://my-json-server.typicode.com/Shershulia/CalculatorUsingVueJs/comments",
-          this.comment,
-          alert("Success")
-        )
-        .then(function (response) {
-          console.log("Response", response);
-        })
-        .catch(function (err) {
-          console.log("Error", err);
-        });
+      this.v$.$validate() // checks all inputs
+      if(!this.v$.$error) {
+        axios
+          .post(
+            "https://my-json-server.typicode.com/Shershulia/CalculatorUsingVueJs/comments",
+            this.comment,
+            alert("Success")
+          )
+          .then(function(response) {
+            console.log("Response", response);
+          })
+          .catch(function(err) {
+            console.log("Error", err);
+          });
+      }else alert("Invalid")
     },
   },
 };
