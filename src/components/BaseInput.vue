@@ -53,6 +53,7 @@ input {
   border-radius: 4px;
   background-color: #f8f8f8;
   resize: none;
+  
 }
 label {
   margin: 30px;

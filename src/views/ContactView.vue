@@ -9,6 +9,7 @@
           :options="categories"
           v-model="comment.category"
           label="Select category"
+          class="object"
         ></BaseSelect>
         <p v-if="v$.comment.category.$error">
           {{ v$.comment.category.$errors[0].$message }}
@@ -17,13 +18,12 @@
 
       <fieldset>
         <legend>Personal information to five you feedback</legend>
-        <BaseInput v-model="comment.name" label="Name" type="text">
-        </BaseInput>
+        <BaseInput v-model="comment.name" label="Name" type="text" class="object"> </BaseInput>
         <p v-if="v$.comment.name.$error">
-        {{ v$.comment.name.$errors[0].$message }}
+          {{ v$.comment.name.$errors[0].$message }}
         </p>
-        <br>
-        <BaseInput v-model="comment.mail" label="E-mail" type="text">
+        <br />
+        <BaseInput v-model="comment.mail" label="E-mail" type="text" class="object">
         </BaseInput>
 
         <p v-if="v$.comment.mail.$error">
@@ -36,13 +36,14 @@
           v-model="comment.description"
           label="Description"
           type="text"
+          class="object"
         ></BaseInput>
         <p v-if="v$.comment.description.$error">
           {{ v$.comment.description.$errors[0].$message }}
         </p>
       </fieldset>
 
-      <button class="button -fill-gradient" type="submit">Submit</button>
+      <button id="submit_button" type="submit">Submit</button>
     </form>
   </div>
 </template>
@@ -52,7 +53,8 @@ import BaseInput from "@/components/BaseInput.vue";
 import BaseSelect from "@/components/BaseSelect.vue";
 import axios from "axios";
 import useValidate from "@vuelidate/core";
-import { required, email, minLength } from "@vuelidate/validators";
+import { required, email, minLength, helpers } from "@vuelidate/validators";
+const onlyLetters = helpers.regex("/^[a-zA-Z\\s]*$/");
 
 export default {
   components: { BaseSelect, BaseInput },
@@ -74,7 +76,13 @@ export default {
     return {
       comment: {
         category: { required },
-        name: { required },
+        name: {
+          required,
+          onlyLetters: helpers.withMessage(
+            "Here accepted only letters",
+            onlyLetters
+          ),
+        },
         mail: { required, email },
         description: { required, minLength: minLength(6) },
       },
@@ -84,6 +92,7 @@ export default {
     sendForm() {
       this.v$.$validate(); // checks all inputs
       if (!this.v$.$error) {
+        document.getElementById('submit_button').disabled = false;
         axios
           .post(
             "https://my-json-server.typicode.com/Shershulia/CalculatorUsingVueJs/comments",
@@ -96,8 +105,11 @@ export default {
           .catch(function (err) {
             console.log("Error", err);
           });
-      } else alert("Invalid");
-    },
+      } else {
+        document.getElementById('submit_button').disabled = true;
+        alert("Invalid");
+      }
+      },
   },
 };
 </script>
@@ -115,5 +127,8 @@ legend {
 p {
   font-size: 12px;
   color: red;
+}
+.object{
+  margin: 10px;
 }
 </style>
