@@ -18,12 +18,12 @@
 
       <fieldset>
         <legend>Personal information to five you feedback</legend>
-        <BaseInput v-model="comment.name" label="Name" type="text" class="object"> </BaseInput>
+        <BaseInput v-model="comment.name" label="Name" type="text" class="object" id = "comment_name"> </BaseInput>
         <p v-if="v$.comment.name.$error">
           {{ v$.comment.name.$errors[0].$message }}
         </p>
         <br />
-        <BaseInput v-model="comment.mail" label="E-mail" type="text" class="object">
+        <BaseInput v-model="comment.mail" label="E-mail" type="text" id = "comment_mail" class="object">
         </BaseInput>
 
         <p v-if="v$.comment.mail.$error">
@@ -43,7 +43,7 @@
         </p>
       </fieldset>
 
-      <button id="submit_button" type="submit">Submit</button>
+      <button id="submit_button" :disabled="v$.$error" type="submit">Submit</button>
     </form>
   </div>
 </template>
@@ -54,7 +54,10 @@ import BaseSelect from "@/components/BaseSelect.vue";
 import axios from "axios";
 import useValidate from "@vuelidate/core";
 import { required, email, minLength, helpers } from "@vuelidate/validators";
-const onlyLetters = helpers.regex("/^[a-zA-Z\\s]*$/");
+import CommentService from "@/services/CommentService";
+const onlyLetters = (value) => value.match(/^[a-zA-Z\s]*$/);
+
+
 
 export default {
   components: { BaseSelect, BaseInput },
@@ -66,8 +69,8 @@ export default {
       categories: ["experience", "bag"],
       comment: {
         category: "",
-        name: "",
-        mail: "",
+        name: this.$store.state.name,
+        mail: this.$store.state.email,
         description: "",
       },
     };
@@ -92,11 +95,13 @@ export default {
     sendForm() {
       this.v$.$validate(); // checks all inputs
       if (!this.v$.$error) {
-        document.getElementById('submit_button').disabled = false;
         axios
           .post(
             "https://my-json-server.typicode.com/Shershulia/CalculatorUsingVueJs/comments",
             this.comment,
+            this.$store.commit("SET_NAME",this.comment.name),
+            this.$store.commit("SET_EMAIL",this.comment.mail),
+
             alert("Success")
           )
           .then(function (response) {
@@ -106,7 +111,6 @@ export default {
             console.log("Error", err);
           });
       } else {
-        document.getElementById('submit_button').disabled = true;
         alert("Invalid");
       }
       },

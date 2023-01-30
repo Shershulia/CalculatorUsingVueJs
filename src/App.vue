@@ -6,6 +6,7 @@
   <h1>Calculator app</h1>
 
   <router-view />
+
 </template>
 
 <style>
