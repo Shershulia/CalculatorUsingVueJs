@@ -44,14 +44,9 @@
 
 <script>
 // @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
 
 export default {
   name: "CalculatorView",
-  components: {
-    // eslint-disable-next-line vue/no-unused-components
-    HelloWorld,
-  },
   data() {
     return {
       first: "",

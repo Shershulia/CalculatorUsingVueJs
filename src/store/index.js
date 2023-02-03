@@ -10,10 +10,10 @@ export default createStore({
     SET_NAME(state, event) {
       state.name = event;
     },
-    SET_EMAIL(state, event){
-      state.email=event;
-    }
+    SET_EMAIL(state, event) {
+      state.email = event;
     },
+  },
   actions: {},
   modules: {},
 });
