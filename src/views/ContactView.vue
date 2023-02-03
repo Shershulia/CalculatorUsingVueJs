@@ -82,10 +82,10 @@ export default {
       categories: ["experience", "bag"],
       form_status: "",
       comment: {
-        category: "",
+        category: this.$store.state.category,
         name: this.$store.state.name,
         mail: this.$store.state.email,
-        description: "",
+        description: this.$store.state.description,
       },
     };
   },
