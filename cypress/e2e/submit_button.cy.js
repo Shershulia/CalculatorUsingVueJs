@@ -11,8 +11,12 @@ describe('app', () => {
     cy.on('window:alert', (str) => {
       expect(str).to.equal('Success');
     });
-
-    cy.wait('@call').its('response.statusCode').should('eq', 201);
-
+    cy.wait("@call").its("response.body").should("deep.equal",{
+      "category": "bag",
+      "name": "Ivan",
+      "mail": "example@mail.ru",
+      "description": "There is a bag in the corner",
+      "id": 1
+    })
   })
 })
