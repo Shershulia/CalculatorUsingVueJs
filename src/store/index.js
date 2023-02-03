@@ -3,8 +3,8 @@ const storeConfiguration = {
   state: {
     name: "",
     email: "",
-    description:"",
-    category:""
+    description: "",
+    category: "",
   },
   getters: {},
   mutations: {
@@ -16,25 +16,26 @@ const storeConfiguration = {
     },
   },
   actions: {},
-  modules: {},}
+  modules: {},
+};
 const defaultOverrides = {
-  state: ()=>{
-    return {}
-  }
-}
-function makeState(inits,override){
-  return{
+  state: () => {
+    return {};
+  },
+};
+function makeState(inits, override) {
+  return {
     ...(typeof inits === "function" ? inits() : inits),
-    ...override()
-  }
+    ...override(),
+  };
 }
-export function createStore(storeOverrides = defaultOverrides){
+export function createStore(storeOverrides = defaultOverrides) {
   return VuexCreateStore({
     ...storeConfiguration,
     ...storeOverrides,
     ...{
-      state:makeState(storeConfiguration.state,storeOverrides.state)
-    }
-  })
+      state: makeState(storeConfiguration.state, storeOverrides.state),
+    },
+  });
 }
 export default createStore();

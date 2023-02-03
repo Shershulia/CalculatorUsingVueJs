@@ -4,7 +4,7 @@ import { describe, it, expect } from "vitest";
 import { createStore } from "../store";
 
 
-function mountEventList(config = {}) {
+function mountContactForm(config = {}) {
   config.mountOptions = config.mountOptions || {}
   config.plugins = config.plugins || {}
   return mount(ContactView, {
@@ -19,19 +19,19 @@ function mountEventList(config = {}) {
 describe("Calculator.vue", () => {
 
   it("Form loads successfully", () => {
-    const wrapper = mountEventList();
+    const wrapper = mountContactForm();
     expect(wrapper.exists()).toBeTruthy()
   });
 
   it("Loads with button names",() => {
-    const wrapper = mountEventList();
+    const wrapper = mountContactForm();
     const title = wrapper.find("#submit_button");
     expect(title.exists()).toBeTruthy();
     expect(title.text()).toContain("Submit")
   });
 
   it("Form is valid",() => {
-    const wrapper = mountEventList({
+    const wrapper = mountContactForm({
       plugins: {
         store: {
           state: () => ({
@@ -49,7 +49,7 @@ describe("Calculator.vue", () => {
     expect(wrapper.vm.v$.comment.category.$error).toBe(false);
   });
   it("Form is invalid due description",() => {
-    const wrapper = mountEventList({
+    const wrapper = mountContactForm({
       plugins: {
         store: {
           state: () => ({
@@ -69,7 +69,7 @@ describe("Calculator.vue", () => {
 
   });
   it("Form is invalid due to name",() => {
-    const wrapper = mountEventList({
+    const wrapper = mountContactForm({
       plugins: {
         store: {
           state: () => ({
@@ -89,7 +89,7 @@ describe("Calculator.vue", () => {
 
   });
   it("Form is invalid due to mail",() => {
-    const wrapper = mountEventList({
+    const wrapper = mountContactForm({
       plugins: {
         store: {
           state: () => ({
@@ -109,7 +109,7 @@ describe("Calculator.vue", () => {
 
   });
   it("Form is invalid due to category",() => {
-    const wrapper = mountEventList({
+    const wrapper = mountContactForm({
       plugins: {
         store: {
           state: () => ({

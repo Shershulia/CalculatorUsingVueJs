@@ -10,6 +10,7 @@
           v-model="comment.category"
           label="Select category"
           class="object"
+          data-test="test-cat"
         ></BaseSelect>
         <p v-if="v$.comment.category.$error">
           {{ v$.comment.category.$errors[0].$message }}
@@ -24,6 +25,7 @@
           type="text"
           class="object"
           id="comment_name"
+          data-test="test-name"
         >
         </BaseInput>
         <p v-if="v$.comment.name.$error">
@@ -36,6 +38,7 @@
           type="text"
           id="comment_mail"
           class="object"
+          data-test="test-email"
         >
         </BaseInput>
 
@@ -50,13 +53,19 @@
           label="Description"
           type="text"
           class="object"
+          data-test="test-desc"
         ></BaseInput>
         <p v-if="v$.comment.description.$error">
           {{ v$.comment.description.$errors[0].$message }}
         </p>
       </fieldset>
 
-      <button id="submit_button" :disabled="v$.$error" type="submit">
+      <button
+        id="submit_button"
+        :disabled="v$.$error"
+        type="submit"
+        data-test="submit_button"
+      >
         Submit
       </button>
     </form>
