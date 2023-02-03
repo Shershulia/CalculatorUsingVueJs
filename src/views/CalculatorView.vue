@@ -38,6 +38,7 @@
           {{ log }}
         </li>
       </div>
+      <text id="error" v-text="error"></text>
     </div>
   </body>
 </template>
@@ -53,22 +54,25 @@ export default {
       second: "",
       operation: "",
       logs: [],
+      error: "",
     };
   },
   methods: {
     addLast(p1) {
       if (this.operation === "") {
         if (p1 === ".") {
+          if (this.first === "") this.first += "0";
           if (this.first.includes(".")) {
-            alert("You cannot have two commas");
+            this.error = "You cannot have two commas";
             return;
           }
         }
         this.first += p1;
       } else {
         if (p1 === ".") {
+          if (this.second === "") this.second += "0";
           if (this.second.includes(".")) {
-            alert("You cannot have two commas");
+            this.error = "You cannot have two commas";
             return;
           }
         }
@@ -82,13 +86,13 @@ export default {
     },
     solve() {
       if (this.first === "") {
-        alert("First number is empty");
+        this.error = "First number is empty";
       } else if (this.operation == "") {
-        alert("You should input operation");
+        this.error = "You should input operation";
       } else if (this.second === "") {
-        alert("Second number is empty");
+        this.error = "Second number is empty";
       } else if (this.operation === "/" && this.second === "0") {
-        alert("You cannot divide on zero");
+        this.error = "You cannot divide on zero Choose another option";
         this.second = "";
       } else {
         let x = eval(this.first + this.operation + this.second).toFixed(3);
@@ -159,5 +163,8 @@ export default {
   border: solid;
   padding: 5px;
   overflow: auto;
+}
+#error {
+  width: 400px;
 }
 </style>

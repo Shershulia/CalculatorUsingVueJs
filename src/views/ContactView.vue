@@ -17,7 +17,7 @@
       </fieldset>
 
       <fieldset>
-        <legend>Personal information to five you feedback</legend>
+        <legend>Personal information to give you feedback</legend>
         <BaseInput
           v-model="comment.name"
           label="Name"
@@ -64,8 +64,8 @@
 </template>
 
 <script>
-import BaseInput from "@/components/BaseInput.vue";
-import BaseSelect from "@/components/BaseSelect.vue";
+import BaseInput from "../components/BaseInput.vue";
+import BaseSelect from "../components/BaseSelect.vue";
 import axios from "axios";
 import useValidate from "@vuelidate/core";
 import { required, email, minLength, helpers } from "@vuelidate/validators";
@@ -80,6 +80,7 @@ export default {
   data() {
     return {
       categories: ["experience", "bag"],
+      form_status: "",
       comment: {
         category: "",
         name: this.$store.state.name,
@@ -114,7 +115,7 @@ export default {
             this.comment,
             this.$store.commit("SET_NAME", this.comment.name),
             this.$store.commit("SET_EMAIL", this.comment.mail),
-
+            (this.form_status = "Success"),
             alert("Success")
           )
           .then(function (response) {
@@ -124,7 +125,7 @@ export default {
             console.log("Error", err);
           });
       } else {
-        alert("Invalid");
+        (this.form_status = "Invalid"), alert("Invalid");
       }
     },
   },

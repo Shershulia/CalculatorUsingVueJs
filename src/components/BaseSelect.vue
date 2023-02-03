@@ -26,7 +26,7 @@
   </select>
 </template>
 <script>
-import UniqueID from "@/features/UniqueID";
+import UniqueID from "../features/UniqueID";
 
 export default {
   props: {
