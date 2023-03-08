@@ -1,5 +1,5 @@
 import { mount } from "@vue/test-utils";
-import CalculatorView from "../src/views/CalculatorView.vue";
+import CalculatorView from "../views/CalculatorView.vue";
 import { describe, it, expect } from "vitest";
 
 describe("Calculator.vue", () => {

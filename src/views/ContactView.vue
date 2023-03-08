@@ -124,7 +124,6 @@ export default {
             this.comment,
             this.$store.commit("SET_NAME", this.comment.name),
             this.$store.commit("SET_EMAIL", this.comment.mail),
-            (this.form_status = "Success"),
             alert("Success")
           )
           .then(function (response) {
@@ -134,7 +133,7 @@ export default {
             console.log("Error", err);
           });
       } else {
-        (this.form_status = "Invalid"), alert("Invalid");
+        alert("Invalid");
       }
     },
   },

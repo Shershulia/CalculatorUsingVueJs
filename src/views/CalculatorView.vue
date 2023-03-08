@@ -33,9 +33,16 @@
       <button type="button" id="but" v-on:click="addLast('.')">.</button>
       <button type="button" id="but" v-on:click="solve">=</button>
       <div class="logs">
-        Logs <br />
+        Logs for this operation<br />
         <li v-for="log in logs" :key="log">
           {{ log }}
+        </li>
+      </div>
+
+      <div class="logs">
+        History<br />
+        <li v-for="hist in history" :key="hist">
+          {{ hist }}
         </li>
       </div>
       <text id="error" v-text="error"></text>
@@ -44,7 +51,7 @@
 </template>
 
 <script>
-// @ is an alias to /src
+import axios from "axios";
 
 export default {
   name: "CalculatorView",
@@ -54,8 +61,33 @@ export default {
       second: "",
       operation: "",
       logs: [],
+      history: [],
       error: "",
     };
+  },
+  created() {
+    axios
+      .get("http://localhost:8081/calculations", {
+        headers: { Authorization: "Basic aXZhbnNoOmFkbWlu" },
+      })
+      .then((response) => {
+        const data = response.data;
+        data.forEach((item) => {
+          let toHistory =
+            item.firstComponent +
+            item.operation +
+            item.secondComponent +
+            "=" +
+            item.result +
+            "\n";
+          if (this.history) {
+            this.history.push(toHistory);
+          } else {
+            this.history = [toHistory];
+          }
+          console.log(toHistory);
+        });
+      });
   },
   methods: {
     addLast(p1) {
@@ -84,10 +116,27 @@ export default {
       this.second = "";
       this.operation = "";
     },
+    getLastFromApi() {
+      axios
+        .get("http://localhost:8081/calculations", {
+          headers: { Authorization: "Basic aXZhbnNoOmFkbWlu" },
+        })
+        .then((response) => {
+          let lastItem = response.data[response.data.length - 1];
+          let toLog =
+            lastItem.firstComponent +
+            lastItem.operation +
+            lastItem.secondComponent +
+            "=" +
+            lastItem.result +
+            "\n";
+          this.logs.push(toLog);
+        });
+    },
     solve() {
       if (this.first === "") {
         this.error = "First number is empty";
-      } else if (this.operation == "") {
+      } else if (this.operation === "") {
         this.error = "You should input operation";
       } else if (this.second === "") {
         this.error = "Second number is empty";
@@ -96,9 +145,28 @@ export default {
         this.second = "";
       } else {
         let x = eval(this.first + this.operation + this.second).toFixed(3);
-        this.logs.push(
-          this.first + this.operation + this.second + "=" + x + "\n"
-        );
+
+        const postData = {
+          firstComponent: this.first,
+          secondComponent: this.second,
+          operation: this.operation,
+          result: x,
+        };
+
+        let axiosConfig = {
+          headers: { Authorization: "Basic aXZhbnNoOmFkbWlu" },
+        };
+
+        axios
+          .post("http://localhost:8081/calculations", postData, axiosConfig)
+          .then((res) => {
+            console.log("RESPONSE RECEIVED: ", res);
+          })
+          .catch((err) => {
+            console.log("AXIOS ERROR: ", err);
+          });
+
+        this.getLastFromApi();
         this.first = x;
         this.second = "";
         this.operation = "";
