@@ -52,6 +52,7 @@
 
 <script>
 import axios from "axios";
+import router from "@/router";
 
 export default {
   name: "CalculatorView",
@@ -66,9 +67,11 @@ export default {
     };
   },
   created() {
+    let url =
+      "http://localhost:8081/users/" + this.$store.state.name + "/calculations";
     axios
-      .get("http://localhost:8081/calculations", {
-        headers: { Authorization: "Basic aXZhbnNoOmFkbWlu" },
+      .get(url, {
+        headers: { Authorization: "Bearer " + this.$store.state.token },
       })
       .then((response) => {
         const data = response.data;
@@ -88,6 +91,12 @@ export default {
           console.log(toHistory);
         });
       });
+    let timer = setInterval(() => {
+      this.$store.commit("SET_AUT", false);
+      this.$store.commit("SET_TOKEN", "");
+      router.push("/login");
+    }, 300000);
+    this.$store.commit("SET_TIMER", timer);
   },
   methods: {
     addLast(p1) {
@@ -116,23 +125,6 @@ export default {
       this.second = "";
       this.operation = "";
     },
-    getLastFromApi() {
-      axios
-        .get("http://localhost:8081/calculations", {
-          headers: { Authorization: "Basic aXZhbnNoOmFkbWlu" },
-        })
-        .then((response) => {
-          let lastItem = response.data[response.data.length - 1];
-          let toLog =
-            lastItem.firstComponent +
-            lastItem.operation +
-            lastItem.secondComponent +
-            "=" +
-            lastItem.result +
-            "\n";
-          this.logs.push(toLog);
-        });
-    },
     solve() {
       if (this.first === "") {
         this.error = "First number is empty";
@@ -145,7 +137,6 @@ export default {
         this.second = "";
       } else {
         let x = eval(this.first + this.operation + this.second).toFixed(3);
-
         const postData = {
           firstComponent: this.first,
           secondComponent: this.second,
@@ -154,11 +145,14 @@ export default {
         };
 
         let axiosConfig = {
-          headers: { Authorization: "Basic aXZhbnNoOmFkbWlu" },
+          headers: { Authorization: "Bearer " + this.$store.state.token },
         };
-
+        let link =
+          "http://localhost:8081/users/" +
+          this.$store.state.name +
+          "/calculations";
         axios
-          .post("http://localhost:8081/calculations", postData, axiosConfig)
+          .post(link, postData, axiosConfig)
           .then((res) => {
             console.log("RESPONSE RECEIVED: ", res);
           })
@@ -166,7 +160,8 @@ export default {
             console.log("AXIOS ERROR: ", err);
           });
 
-        this.getLastFromApi();
+        let toLog = this.first + this.operation + this.second + "=" + x + "\n";
+        this.logs.push(toLog);
         this.first = x;
         this.second = "";
         this.operation = "";

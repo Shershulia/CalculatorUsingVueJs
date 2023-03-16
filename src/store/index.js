@@ -1,10 +1,14 @@
 import { createStore as VuexCreateStore } from "vuex";
+
 const storeConfiguration = {
   state: {
     name: "",
     email: "",
     description: "",
     category: "",
+    token: "",
+    isAuth: false,
+    timer: null,
   },
   getters: {},
   mutations: {
@@ -13,6 +17,15 @@ const storeConfiguration = {
     },
     SET_EMAIL(state, event) {
       state.email = event;
+    },
+    SET_AUT(state, event) {
+      state.isAuth = event;
+    },
+    SET_TOKEN(state, event) {
+      state.token = event;
+    },
+    SET_TIMER(state, event) {
+      state.timer = event;
     },
   },
   actions: {},
